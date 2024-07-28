@@ -1,5 +1,5 @@
 import { connectMongoDb } from '@/lib/db';
-import Post, { IPost } from '@/models/Post';
+import Post, { IPost } from '@/lib/models/Post';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -7,14 +7,14 @@ export async function POST(req: NextRequest) {
   const body: IPost = await req.json();
   if (!body.title || !body.description) {
     return NextResponse.json(
-      { message: 'Product name is missing' },
+      { message: 'Post cannot be created without title and description' },
       { status: 400 },
     );
   }
 
-  const product = await Post.create(body);
+  const post = await Post.create(body);
   return NextResponse.json(
-    { product, message: 'Your post has been created' },
+    { post, message: 'Your post has been created' },
     { status: 201 },
   );
 }
